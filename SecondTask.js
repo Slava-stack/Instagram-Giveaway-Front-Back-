@@ -1,86 +1,64 @@
-// SubTask 2.1
-function getFiles(path = 'C:\\Users\\Slava\\Desktop\\files2\\'){     // receives the path to the dir / folder with files
-    let fs = require('fs')
-    let files = fs.readdirSync(path)
-    return files
-}
+const fs = require('fs');
+const path = require('path');
 
-function uniqueValues(path = 'C:\\Users\\Slava\\Desktop\\files2\\'){     // receives the path to dir with files
-    let s = new Set()
-    const fs = require('fs')
-    const dir = path
-    let allFiles = getFiles(path)
-    for(let j in allFiles) {
-        let file = allFiles[j]
-        let absolutePath = path+file
-        let text = fs.readFileSync(absolutePath).toString('utf-8')
-        let textByLine = text.split('\n')
-        for (let i in textByLine) {
-            s.add(textByLine[i])
-        }
+function uniqueValues(){
+    const s = new Set();
+    for(let j = 0; j < 20; j++) {
+        fs.readFileSync(`${__dirname}${path.sep}out${j}.txt`).toString('utf-8').split('\n').forEach( el => s.add(el));
     }
-    return 'Уникальных словосочетаний: '+ s.size
+    return `Уникальных словосочетаний: ${s.size}`;
 }
 
-// SubTask 2.2
-function existInAtLeastTen(path = 'C:\\Users\\Slava\\Desktop\\files2\\') {     // receives the path to dir with files
-    let dict = new Object()
-    const fs = require('fs')
-    const dir = path
-    let allFiles = getFiles(path)
-    for (let j in allFiles) {
-        let s = new Set()
-        let file = allFiles[j]
-        let absolutePath = path + file
-        let text = fs.readFileSync(absolutePath).toString('utf-8')
-        let textByLine = text.split('\n')
-        for(let i in textByLine) {
-            s.add(textByLine[i])
+function existInAtLeastTen(){
+    let arr = new Object();
+for(let j = 0; j < 20; j++) {
+    let s = new Set();
+    const text = fs.readFileSync(`${__dirname}${path.sep}out${j}.txt`).toString('utf-8').split('\n');
+        for(let i of text) {
+            s.add(i);
         }
         for(let el of s){
-            dict[el] = (dict[el] || 0) + 1
+            arr[el] = (arr[el] || 0) + 1;
         }
     }
-    let amountOfThePhrases = 0               //  probably it should be done through filter
-    // let filteredDict = Object.values(dict).filter(dict => dict >= 9)  // it must be reworked it's gonna be a better version
-    for(let k in dict) {
-        if (dict[k] >= 10) {
-            amountOfThePhrases += 1
+    amountOfThePhrases = 0;
+    for(let k in arr) {
+        if (arr[k] > 9) {
+            amountOfThePhrases += 1;
         }
     }
-    return  'Словосочетаний, которые есть, как минимум, в десяти файлах: ' + amountOfThePhrases
+    return  `Словосочетаний, которые есть, как минимум, в десяти файлах: ${amountOfThePhrases}`;
 }
 
-// SubTask 2.3
-function existInAllFiles(path = 'C:\\Users\\Slava\\Desktop\\files2\\') {     // receives the path to dir with files
-    let dict = new Object()
-    const fs = require("fs")
-    const dir = path
-    let allFiles = getFiles(path)
-    for (let j in allFiles) {
-        let s = new Set()
-        let file = allFiles[j]
-        let absolutePath = path + file
-        let text = fs.readFileSync(absolutePath).toString('utf-8')
-        let textByLine = text.split('\n')
-        for(let i in textByLine) {
-            s.add(textByLine[i])
+function existInAllFiles() {
+    let arr = new Object();
+for(let j = 0; j < 20; j++) {
+        let s = new Set();
+        for(let i of fs.readFileSync(`${__dirname}${path.sep}out${j}.txt`).toString('utf-8').split('\n')){
+            s.add([i]);
         }
         for(let el of s){
-            dict[el] = (dict[el] || 0) + 1
+            arr[el] = (arr[el] || 0) + 1;
         }
     }
-    let amountOfThePhrases = 0               //  probably it should be done through filter
-    // let filteredDict = Object.values(dict).filter(dict => dict >= 9)  // it must be reworked it's gonna be a better version
-    for(let k in dict) {
-        if (dict[k] === 20) {
-            amountOfThePhrases += 1
+    let amountOfThePhrases = 0;
+    for(let k in arr) {
+        if (arr[k] === 20) {
+            amountOfThePhrases += 1;
         }
     }
-    return 'Словосочетаний, которые есть во всех 20 файлах: ' + amountOfThePhrases
+    return `Словосочетаний, которые есть во всех 20 файлах: ${amountOfThePhrases}`;
 }
 
+console.time("first");
+console.log(uniqueValues());
+console.timeEnd("first");
 
-console.log(uniqueValues())
-console.log(existInAllFiles())
-console.log(existInAtLeastTen())
+console.time("second");
+console.log(existInAllFiles());
+console.timeEnd("second");
+
+console.time("third");
+console.log(existInAtLeastTen());
+console.timeEnd("third");
+
