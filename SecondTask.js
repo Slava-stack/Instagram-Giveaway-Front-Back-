@@ -11,10 +11,9 @@ function uniqueValues(){
 
 function existInAtLeastTen(){
     let arr = new Object();
-for(let j = 0; j < 20; j++) {
+    for(let j = 0; j < 20; j++) {
     let s = new Set();
-    const text = fs.readFileSync(`${__dirname}${path.sep}out${j}.txt`).toString('utf-8').split('\n');
-        for(let i of text) {
+        for(let i of fs.readFileSync(`${__dirname}${path.sep}out${j}.txt`).toString('utf-8').split('\n')) {
             s.add(i);
         }
         for(let el of s){
@@ -61,4 +60,3 @@ console.timeEnd("second");
 console.time("third");
 console.log(existInAtLeastTen());
 console.timeEnd("third");
-
