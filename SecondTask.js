@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+
 function uniqueValues(){
     const s = new Set();
     for(let j = 0; j < 20; j++) {
@@ -8,6 +9,23 @@ function uniqueValues(){
     }
     return `Уникальных словосочетаний: ${s.size}`;
 }
+
+
+function existInAllFiles() {
+    let arr = new Object();
+    for(let j = 0; j < 20; j++) {
+        let s = new Set();
+        for(let i of fs.readFileSync(`${__dirname}${path.sep}out${j}.txt`).toString('utf-8').split('\n')){
+            s.add([i]);
+        }
+        for(let el of s){
+            arr[el] = (arr[el] || 0) + 1;
+        }
+    }
+    const amount = Object.values(arr).filter(counter => counter === 20);
+    return `Словосочетаний, которые есть во всех 20 файлах: ${amount.length}`;
+}
+
 
 function existInAtLeastTen(){
     let arr = new Object();
@@ -20,34 +38,10 @@ function existInAtLeastTen(){
             arr[el] = (arr[el] || 0) + 1;
         }
     }
-    amountOfThePhrases = 0;
-    for(let k in arr) {
-        if (arr[k] > 9) {
-            amountOfThePhrases += 1;
-        }
-    }
-    return  `Словосочетаний, которые есть, как минимум, в десяти файлах: ${amountOfThePhrases}`;
+    const amount = Object.values(arr).filter(counter => counter > 9);
+    return  `Словосочетаний, которые есть, как минимум, в десяти файлах: ${amount.length}`;
 }
 
-function existInAllFiles() {
-    let arr = new Object();
-for(let j = 0; j < 20; j++) {
-        let s = new Set();
-        for(let i of fs.readFileSync(`${__dirname}${path.sep}out${j}.txt`).toString('utf-8').split('\n')){
-            s.add([i]);
-        }
-        for(let el of s){
-            arr[el] = (arr[el] || 0) + 1;
-        }
-    }
-    let amountOfThePhrases = 0;
-    for(let k in arr) {
-        if (arr[k] === 20) {
-            amountOfThePhrases += 1;
-        }
-    }
-    return `Словосочетаний, которые есть во всех 20 файлах: ${amountOfThePhrases}`;
-}
 
 console.time("first");
 console.log(uniqueValues());
