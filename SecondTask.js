@@ -11,34 +11,30 @@ function uniqueValues(){
 }
 
 
-function existInAllFiles() {
+function existInAllFiles(){
     let arr = new Object();
     for(let j = 0; j < 20; j++) {
         let s = new Set();
-        for(let i of fs.readFileSync(`${__dirname}${path.sep}out${j}.txt`).toString('utf-8').split('\n')){
-            s.add([i]);
+        for(let i of fs.readFileSync(`${__dirname}${path.sep}out${j}.txt`).toString('utf-8').split('\n')) {
+            s.add(i);
         }
-        for(let el of s){
-            arr[el] = (arr[el] || 0) + 1;
-        }
+        s.forEach(el => arr[el] = (arr[el] || 0) + 1);
     }
-    const amount = Object.values(arr).filter(counter => counter === 20);
-    return `Словосочетаний, которые есть во всех 20 файлах: ${amount.length}`;
+    const amount = Object.values(arr).filter(value => value === 20);
+    return  `Словосочетаний, которые есть во всех 20 файлах: ${amount.length}`;
 }
 
 
 function existInAtLeastTen(){
     let arr = new Object();
     for(let j = 0; j < 20; j++) {
-    let s = new Set();
+        let s = new Set();
         for(let i of fs.readFileSync(`${__dirname}${path.sep}out${j}.txt`).toString('utf-8').split('\n')) {
             s.add(i);
         }
-        for(let el of s){
-            arr[el] = (arr[el] || 0) + 1;
-        }
+        s.forEach(el => arr[el] = (arr[el] || 0) + 1);
     }
-    const amount = Object.values(arr).filter(counter => counter > 9);
+    const amount = Object.values(arr).filter(value => value > 9);
     return  `Словосочетаний, которые есть, как минимум, в десяти файлах: ${amount.length}`;
 }
 
